@@ -16,6 +16,16 @@ struct edge {
 	int weight;
 };
 
+bool connection(vert* v1, vert* v2) {
+  // checks if a directed edge from n1 to n2 exists
+  for (int i=0; i<v1->edges.size(); i++) {
+    if (v1->edges[i]->end == v2) {
+      return true;
+    }
+  }
+  return false;
+}
+
 int main(){
 	vector <vert*> verts;
 	char input[50];
@@ -80,7 +90,26 @@ int main(){
 
 		}
 		else if(strcmp(input,"RV") == 0){//If user wants to delete a specific student
-
+			vert* removal = NULL;
+			int index;
+			cout << "Enter the vertex to delete: "; 
+			cin >> input;
+			for (int i=0; i<verts.size(); i++) {
+				if (strcmp(verts[i]->name,input) == 0) {
+					removal = verts[i];
+					index = i;
+				}    
+			}
+			for (int i=0; i<verts.size(); i++) {
+				if (connection(verts[i],removal) == true) {
+					for (int j=0; j<verts[i]->edges.size(); j++) {
+						if (verts[i]->edges[j]->end == removal) {
+							verts[i]->edges.erase(verts[i]->edges.begin()+i);
+						}
+					}
+				}
+			}
+			verts.erase(verts.begin()+index);
 		}
 		else if(strcmp(input,"PRINT") == 0){//If user wants to print a specific student
 		}
