@@ -87,7 +87,50 @@ int main(){
 
 		}
 		else if(strcmp(input, "RE")==0){
-
+			vert* start = NULL;
+			vert* end = NULL;
+			bool temp;
+			while (temp) {
+				cout << "Enter the starting node of the edge:"; 
+				cin >> input;
+				for (int i=0; i<verts.size(); i++) {
+					if (strcmp(verts[i]->name,input) == 0) {
+						start = verts[i];
+					}
+				}
+				if (start == NULL) {
+					cout << "No node has that label." << endl;
+				}
+				else {
+					temp = false;
+				}
+			}
+			temp = true;
+			while (temp) {
+				cout << "Enter the end node" << endl;
+				cin >> input;
+				for (int i=0; i<verts.size(); i++) {
+					if (strcmp(verts[i]->name,input) == 0) {
+						end = verts[i];
+					}
+				}
+				if (end == NULL) {
+					cout << "No node has that label." << endl;
+				}
+				else {
+					temp = false;
+				}
+			}
+			if (!connection(start, end)) {
+				cout << "No edge" << endl;
+			}
+			else {
+				for (int i=0; i<start->edges.size(); i++) {
+					if (start->edges[i]->end == end) {
+						start->edges.erase(start->edges.begin()+i);
+					}
+				}
+			}
 		}
 		else if(strcmp(input,"RV") == 0){//If user wants to delete a specific student
 			vert* removal = NULL;
@@ -111,10 +154,29 @@ int main(){
 			}
 			verts.erase(verts.begin()+index);
 		}
-		else if(strcmp(input,"PRINT") == 0){//If user wants to print a specific student
-		}
-		else if(strcmp(input,"SP") == 0){//If user wants to print a specific student
+		else if(strcmp(input,"PRINT") == 0){//If user wants to print adjacincy matrix
+			for (int i=0; i<verts.size(); i++) {
+				cout << verts[i]->name;
+				for (int j=0; j<verts.size(); j++) {
+					cout << "\t";
+					if (i == j) {
+						cout << "X";
+					}
+					else if (connection(verts[i],verts[j])) {
+						for(int k = 0; k < verts[i]->edges.size(); k++){
+							if(verts[i]->edges[k]->end == verts[j]){
+								cout << verts[i]->edges[k]->weight;
+							}
+						}
 
+					}
+					else {
+						cout << "0";
+					}
+
+				}
+				cout << endl;
+			}
 		}
 		else if(strcmp(input,"QUIT") == 0){//If user wants to quit
 			quit = true;
